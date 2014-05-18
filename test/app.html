@@ -1,0 +1,406 @@
+<html>
+
+<script type="text/javascript" src="./javascripts/jquery.1.9.1.js"></script>
+<script type="text/javascript" src="./javascripts/jquery.pjax.js"></script>
+<script type="text/javascript" src="./javascripts/mt-data-api.js"></script>
+<script type="text/javascript" src="../MTDataAPIYetAnother.js"></script>
+<link type="text/css" rel="stylesheet" href="./stylesheets/reset-min.css" />
+<link type="text/css" rel="stylesheet" href="./stylesheets/fonts-min.css" />
+<link type="text/css" rel="stylesheet" href="./stylesheets/app.css" />
+
+<div class="headerStripe">
+    <div class="inner">
+        <h1>
+            <a href="./app.html">MovableType DataAPI Test</a>
+        </h1>
+    </div>
+</div>
+
+<div class="mainStripe">
+    <div class="main">
+    </div>
+    
+    <div class="sidemenu">
+        <div class="widget recentEntriesContainer" style="display:none;">
+            <h3>
+                最近の記事
+            </h3>
+            <ul>
+                <li class="template">
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+        <div class="widget categoryContainer" style="display:none;">
+            <h3>
+                カテゴリー
+            </h3>
+            <ul>
+                <li class="template">
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+        <div class="widget tagCloudContainer" style="display:none;">
+            <h3>
+                タグクラウド
+            </h3>
+            <ul>
+                <li class="template">
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+        <div class="widget monthlyArchiveContainer" style="display:none;">
+            <h3>
+                月別アーカイブ
+            </h3>
+            <ul>
+                <li class="template">
+                    <a></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="footerStripe">
+    <div class="inner">
+        <div class="poweredBy">
+            Powered by Movable Type Data API
+        </div>
+    </div>
+</div>
+
+<div class="layoutContainer" style="display:none;">
+    <div class="indexContainer">
+        <div class="pageDescription">
+            このブログは、MovableTypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。
+        </div>
+    </div>
+    <div class="entryListContainer">
+        
+    </div>
+    <div class="entryContainer">
+        <div class="title">
+        </div>
+        <div class="props">
+            <div class="authInfo">
+                <span class="label"></span>
+                <span class="data"></span>
+            </div>
+            <div class="trackbacks">
+                <a href="#trackbacks">
+                    <span class="label">トラックバック</span>
+                    (<span class="data"></span>)
+                </a>
+            </div>
+            <div class="comments">
+                <a href="#comments">
+                    <span class="label">コメント</span>
+                    (<span class="data"></span>)
+                </a>
+            </div>
+        </div>
+        <div class="body">
+        </div>
+        <div class="props2">
+            <div class="categories" style="display:none">
+                <span class="label">カテゴリー: </span>
+                <span class="data"></span>
+            </div>
+            <div class="tags" style="display:none">
+                <span class="label">タグ: </span>
+                <span class="data"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function(){
+    
+    var api = new MT.MTDataAPIYetAnother({
+        //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
+        baseUrl:"http://127.0.0.1:5000"
+    });
+    
+    var routes = {
+        entry: constructEntryPage,
+        month: constructMunthlyArchivePage,
+        category: constructCategoryPage,
+        tag: constructTagPage
+    };
+    
+    var dispachAjaxPage = function() {
+        var params = parseHashQuery();
+        var type = params.shift();
+        (routes[type] || constructIndexPage).apply(this, params);
+        return false;
+    };
+    
+    dispachAjaxPage();
+    $(window).on("hashchange", dispachAjaxPage);
+    
+    /**
+     * タグクラウドを作成
+     */
+    api.listTags(1, 6, {}, function(json) {
+        if (json.error || json.totalResults == 0) {
+            return;
+        }
+        var appender = generateAppender($(".tagCloudContainer"));
+        for (idx in json.items) {
+            var item = json.items[idx];
+            var text = sprintf("%", item.name);
+            var li = appender(text, sprintf("#!/tag/%", encodeURI(item.name)));
+            li.attr("class", "rank-" + item.rank);
+        }
+    });
+    
+    /**
+     * 最近の記事一覧を作成
+     */
+    api.listRecentEntries(1, {limit: 5, fields: 'id,title'}, function(json){
+        if (json.error || json.totalResults == 0) {
+            return;
+        }
+        var appender = generateAppender($(".recentEntriesContainer"));
+        for (idx in json.items) {
+            var item = json.items[idx];
+            var text = item.title;
+            appender(text, window.location.pathname + '#!/entry/' + item.id);
+        }
+    });
+    
+    /**
+     * 月別アーカイブを作成
+     */
+    api.listMonthlyEntryCounts(1, {limit:6}, function(json){
+        if (json.error || json.totalResults == 0) {
+            return;
+        }
+        var appender = generateAppender($(".monthlyArchiveContainer"));
+        for (idx in json.items) {
+            var item = json.items[idx];
+            var text = sprintf("%年%月(%)", item.year, item.month, item.totalResults);
+            appender(text, sprintf("#!/month/%/%", item.year, item.month));
+        }
+    });
+    
+    /**
+     * カテゴリー一覧を作成
+     */
+    api.listCategoryStats(1, function(json) {
+        if (json.error || json.totalResults == 0) {
+            return;
+        }
+        var appender = generateAppender($(".categoryContainer"));
+        for (idx in json.items) {
+            var item = json.items[idx];
+            var text = sprintf("%(%)", item.basename, item.totalResults);
+            appender(text, sprintf("#!/category/%", item.basename));
+        }
+    });
+    
+    return;
+    
+    /**
+     * エントリーページを生成
+     */
+    function constructEntryPage(id) {
+        
+        var cont = $(".layoutContainer > .entryContainer").clone();
+        
+        /**
+         * 記事詳細ページのメインエリアを生成
+         */
+        api.getEntry(1, id, {}, function(json) {
+            if (json.error || json.totalResults == 0) {
+                return;
+            }
+            var createdDate = new Date(json.createdDate);
+            cont.find(".title").html(json.title);
+            cont.find(".body").html(json.body);
+            cont.find(".authInfo .data").html(sprintf(
+                "%(%年%月%日 %:%)",
+                json.author.displayName,
+                createdDate.getFullYear(),
+                createdDate.getMonth(),
+                createdDate.getDate(),
+                pading(createdDate.getHours()),
+                pading(createdDate.getMinutes())
+            ));
+            cont.find(".trackbacks .data").html(json.trackbacks.length);
+            cont.find(".comments .data").html(json.comments.length);
+            
+            /**
+             * prop2にデータを追加
+             */
+            var prop2appender = function (cont, array) {
+                if (array.length) {
+                    cont.show().find(".data").html(array.map(function(v){
+                        return sprintf('<a href="%">%</a>', v, v);
+                    }).join(', '));
+                }
+            }
+            
+            prop2appender(cont.find(".categories"), json.categories);
+            prop2appender(cont.find(".tags"), json.tags);
+            swapMain(cont);
+        });
+        
+        return false;
+    }
+    
+    /**
+     * インデックスページを生成
+     */
+    function constructIndexPage() {
+        
+        var listContainer = $(".layoutContainer > .entryListContainer").clone();
+        var entryTmpl = $(".layoutContainer > .entryContainer").clone();
+        
+        /**
+         * 最近の記事一覧を作成
+         */
+        api.listRecentEntries(1, {limit:10}, function(json){
+            if (json.error || json.totalResults == 0) {
+                return;
+            }
+            for (idx in json.items) {
+                var item = json.items[idx];
+                var text = item.title;
+                var cont = entryTmpl.clone();
+                var createdDate = new Date(item.createdDate);
+                cont.find(".title").html(item.title);
+                cont.find(".body").html(item.excerpt);
+                cont.find(".authInfo .data").html(sprintf(
+                    "%(%年%月%日 %:%)",
+                    item.author.displayName,
+                    createdDate.getFullYear(),
+                    createdDate.getMonth(),
+                    createdDate.getDate(),
+                    pading(createdDate.getHours()),
+                    pading(createdDate.getMinutes())
+                ));
+                cont.find(".trackbacks .data").html(item.trackbacks.length);
+                cont.find(".comments .data").html(item.comments.length);
+                
+                /**
+                 * prop2にデータを追加
+                 */
+                var prop2appender = function (cont, array) {
+                    if (array.length) {
+                        cont.show().find(".data").html(array.map(function(v){
+                            return sprintf('<a href="%">%</a>', v, v);
+                        }).join(', '));
+                    }
+                }
+                
+                prop2appender(cont.find(".categories"), item.categories);
+                prop2appender(cont.find(".tags"), item.tags);
+                cont.appendTo(listContainer);
+            }
+        });
+        
+        swapMain(
+            $(".layoutContainer > .indexContainer").clone().append(listContainer));
+    }
+    
+    /**
+     * 月別一覧ページ
+     * TODO IMPLEMENT IT!
+     */
+    function constructMunthlyArchivePage(year, month) {
+        throw "NOT IMPLEMENTED YET";
+    }
+    
+    /**
+     * カテゴリー別一覧ページ
+     * TODO IMPLEMENT IT!
+     */
+    function constructCategoryPage(basename) {
+        throw "NOT IMPLEMENTED YET";
+    }
+    
+    /**
+     * タグ別一覧ページ
+     * TODO IMPLEMENT IT!
+     */
+    function constructTagPage(tag) {
+        throw "NOT IMPLEMENTED YET";
+    }
+    
+    /**
+     * mainコンテナーの内容を差し替え
+     */
+    function swapMain(newContent) {
+        var main = $(".main");
+        var current = main.children("*");
+        var fadeIn = function(){
+            newContent.hide();
+            main.html(newContent.fadeIn("fast"));
+        }
+        current.length ? current.fadeOut("fast", fadeIn) : fadeIn();
+    }
+    
+    /**
+     * 汎用のリスト要素追加クロージャー
+     */
+    function generateAppender(cont) {
+        cont.show();
+        var ul = cont.find("ul");
+        var tmpl = ul.find(".template").remove();
+        return function (text, href) {
+            var li = tmpl.clone();
+            li.find("a").html(text).attr('href', href);
+            li.appendTo(ul);
+            return li;
+        };
+    }
+    
+    /**
+     * 簡易版sprintf
+     */
+    function sprintf(format) {
+        var values = Array.prototype.slice.call(arguments, 1);
+        for (idx in values) {
+            format = format.replace("%", values[idx]);
+        }
+        return format;
+    }
+    
+    /**
+     * 2桁専用ゼロパディング
+     */
+    function pading(num) {
+        return ('0' + num).slice(-2);
+    }
+    
+    /**
+     * クエリー文字列をパース
+     */
+    function parseQuery(string) {
+        var vars = {};
+        if (!string) {
+            return undefined;
+        }
+        string.split('&').map(function(v, i) {
+            var hash = v.split('=');
+            vars[hash[0]] = hash[1];
+        });
+        return vars;
+    }
+    
+    /**
+     * ハッシュ内クエリー文字列をパース
+     */
+    function parseHashQuery() {
+        var hash = window.location.href.split('#!')[1];
+        return !hash ? [] : hash.replace(/^\//, '').split('/')
+    }
+});
+</script>
+
+</html>

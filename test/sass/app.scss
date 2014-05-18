@@ -1,0 +1,266 @@
+@charset "UTF-8";
+
+$linkColor: #69d;
+
+a{
+    color: $linkColor;
+}
+
+/**
+ * clearfix
+ */
+%clearfix {
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+        // Fixes Opera/contenteditable bug:
+        // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}
+%sidemenuWidgetCommonUl {
+    margin:0;
+    list-style:none;
+    li {
+        a {
+            display:block;
+            padding: 10px 5px;
+            border-bottom:1px solid #eee;
+            white-space: nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+    }
+}
+.headerStripe {
+    width:100%;
+    height:100px;
+    margin-bottom:30px;
+    border-top:10px solid #470101;
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.8);
+    background:#910303;
+    background: -webkit-gradient( linear, left top, left bottom, from(#910303), to(#5F0101));
+    background: -moz-linear-gradient( top, #910303, #5F0101);
+    background: linear-gradient( to bottom, #910303, #5F0101);
+    .inner {
+        width:1000px;
+        margin:auto;
+        position:relative;
+    }
+    h1 {
+        position:absolute;
+        top:0;
+        left:0;
+        a {
+            display:block;
+            line-height:100px;
+            font-size:34px;
+            color:#fff;
+            text-decoration:none;
+            font-family: arial,helvetica,hirakakupro-w3,osaka,"ms pgothic",sans-serif;
+        }
+    }
+}
+.mainStripe {
+    @extend %clearfix;
+    width:1000px;
+    min-height:500px;
+    margin:auto;
+    margin-bottom:40px;
+    .main {
+        float:left;
+        width:730px;
+        min-height:1px;
+        margin-right:30px;
+        .pageDescription {
+            margin:0 -5px 20px;
+            padding:10px 10px;
+            border:1px dotted #ddd;
+        }
+        .entryContainer {
+            @extend %clearfix;
+            margin-bottom:30px;
+            &:last-child {
+                margin-bottom:0;
+            }
+            .title {
+                margin-bottom:0.2em;
+                padding-bottom:0.3em;
+                border-bottom: 1px solid #eee;
+                font-size:1.6em;
+                font-weight:bold;
+            }
+            .props {
+                @extend %clearfix;
+                margin-bottom:20px;
+                font-size:0.9em;
+                > * {
+                    float:left;
+                    margin-right:0.8em;
+                }
+            }
+            .body {
+                @extend %clearfix;
+                margin-bottom:20px;
+                width:100%;
+                * {
+                    max-width:100%;
+                    overflow:scroll;
+                }
+            }
+            .props2 {
+                margin-bottom:20px;
+                font-size:0.9em;
+                > * {
+                    float:left;
+                    margin-right:0.8em;
+                }
+                .label {
+                    font-weight:bold;
+                }
+            }
+        }
+    }
+    .sidemenu {
+        float:right;
+        width:240px;
+        font-size:14px;
+        .widget {
+            margin-bottom:10px;
+            h3 {
+                padding:10px 8px;
+                font-size:1em;
+                background-color:#eee;
+            }
+            a {
+                color: $linkColor;
+                text-decoration:none;
+                &:hover {
+                    background-color:#cba;
+                    color:#fff;
+                }
+            }
+        }
+        .recentEntriesContainer {
+            ul {
+                @extend %sidemenuWidgetCommonUl;
+            }
+        }
+        .categoryContainer {
+            ul {
+                @extend %sidemenuWidgetCommonUl;
+            }
+        }
+        .monthlyArchiveContainer {
+            ul {
+                @extend %sidemenuWidgetCommonUl;
+            }
+        }
+        .tagCloudContainer {
+            ul {
+                padding:10px 5px;
+                font-size:0.8em;
+                li {
+                    display: inline-block;
+                    $baseFontSize: 1.5em;
+                    $offsetFontSize: 0.2em;
+                    a {
+                        white-space:nowrap;
+                        border-radius:4px;
+                        padding: 4px;
+                        margin:-2px;
+                        &:hover {
+                            color:#fff;
+                        }
+                    }
+                    &.rank-1 {
+                        font-size: $baseFontSize + $offsetFontSize * -3;
+                        z-index:1;
+                        a {
+                            color:lighten($linkColor, 15%);
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                    &.rank-2 {
+                        font-size: $baseFontSize + $offsetFontSize * -2;
+                        z-index:2;
+                        a {
+                            color:lighten($linkColor, 10%);
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                    &.rank-3 {
+                        font-size: $baseFontSize + $offsetFontSize * -1;
+                        z-index:3;
+                        a {
+                            color:lighten($linkColor, 5%);
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                    &.rank-4 {
+                        font-size: $baseFontSize + $offsetFontSize * 0;
+                        z-index:4;
+                        a {
+                            color:$linkColor;
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                    &.rank-5 {
+                        font-size: $baseFontSize + $offsetFontSize * 1;
+                        z-index:5;
+                        a {
+                            color:darken($linkColor, 10%);
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                    &.rank-6 {
+                        font-size: $baseFontSize + $offsetFontSize * 2;
+                        z-index:6;
+                        a {
+                            color:darken($linkColor, 20%);
+                            &:hover {
+                                color:#fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.footerStripe {
+    width:100%;
+    height:60px;
+    margin-top:30px;
+    background-color:#470101;
+    color:#fff;
+    .inner {
+        width:1000px;
+        margin:auto;
+        position:relative;
+        .poweredBy {
+            position:absolute;
+            top:0;
+            left:0;
+            line-height:60px;
+            font-size:0.8em;
+        }
+    }
+}
