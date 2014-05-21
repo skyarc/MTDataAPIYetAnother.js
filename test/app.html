@@ -23,41 +23,21 @@
             <h3>
                 最近の記事
             </h3>
-            <ul>
-                <li class="template">
-                    <a></a>
-                </li>
-            </ul>
         </div>
         <div class="widget categoryContainer" style="display:none;">
             <h3>
                 カテゴリー
             </h3>
-            <ul>
-                <li class="template">
-                    <a></a>
-                </li>
-            </ul>
         </div>
         <div class="widget tagCloudContainer" style="display:none;">
             <h3>
                 タグクラウド
             </h3>
-            <ul>
-                <li class="template">
-                    <a></a>
-                </li>
-            </ul>
         </div>
         <div class="widget monthlyArchiveContainer" style="display:none;">
             <h3>
                 月別アーカイブ
             </h3>
-            <ul>
-                <li class="template">
-                    <a></a>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
@@ -113,6 +93,11 @@
             </div>
         </div>
     </div>
+    <ul class="linkListContainer">
+        <li>
+            <a></a>
+        </li>
+    </ul>
 </div>
 
 <script>
@@ -347,9 +332,9 @@ $(function(){
      * 汎用のリスト要素追加クロージャー
      */
     function generateAppender(cont) {
+        var ul = $(".layoutContainer .linkListContainer").clone().appendTo(cont);
         cont.show();
-        var ul = cont.find("ul");
-        var tmpl = ul.find(".template").remove();
+        var tmpl = ul.find("li").remove();
         return function (text, href) {
             var li = tmpl.clone();
             li.find("a").html(text).attr('href', href);
