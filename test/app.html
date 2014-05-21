@@ -143,7 +143,7 @@ $(function(){
     /**
      * タグクラウドを作成
      */
-    api.listTags(1, 6, {}, function(json) {
+    api.listTags(1, 6, function(json) {
         if (json.error || json.totalResults == 0) {
             return;
         }
@@ -213,7 +213,7 @@ $(function(){
         /**
          * 記事詳細ページのメインエリアを生成
          */
-        api.getEntry(1, id, {}, function(json) {
+        api.getEntry(1, id, function(json) {
             if (json.error || json.totalResults == 0) {
                 return;
             }

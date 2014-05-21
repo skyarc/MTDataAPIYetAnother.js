@@ -28,14 +28,35 @@
         this.params = $.extend(default_params, params, {});
     };
     
+    function distachArgs(offset, lastArgs) {
+        
+        var args = Array.prototype.slice.call(lastArgs, offset);
+        
+        switch (args.length) {
+            case 0:
+                return [[], undefined];
+            case 1:
+                return (typeof(args[0]) == "function")
+                                        ? [[], args[0]] : [args[0], undefined];
+            case 2:
+                return [args[0], args[1]];
+        }
+        
+        throw "Error";
+    }
+    
     /**
      * Emulation of official SDK's API with JSONP support
      * @param {Number} Site ID
-     * @param {Object} Additional Parameters
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.getEntry = function(siteId, entryId, params, cb) {
+    Class.prototype.getEntry = function(siteId, entryId) {
+        
+        var opts = distachArgs(2, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries/" + entryId;
         var query = {
@@ -51,10 +72,15 @@
      * Category list with numbers of entries
      * TODO Better implement as server side endpoint for it.
      * @param {Number} Site ID
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listCategoryStats = function(siteId, cb) {
+    Class.prototype.listCategoryStats = function(siteId) {
+        
+        var opts = distachArgs(1, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var api = this;
         
@@ -98,11 +124,15 @@
     /**
      * Category list
      * @param {Number} Site ID
-     * @param {Object} Additional Parameters
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listCategories = function(siteId, params, cb) {
+    Class.prototype.listCategories = function(siteId) {
+        
+        var opts = distachArgs(1, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/categories";
         var query = {
@@ -119,11 +149,15 @@
      * TODO Better implement as server side endpoint for it.
      * @param {Number} Site ID
      * @param {Number} Max rank number
-     * @param {Object} Additional Parameters
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listTags = function(siteId, maxRank, params, cb) {
+    Class.prototype.listTags = function(siteId, maxRank) {
+        
+        var opts = distachArgs(2, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -161,10 +195,14 @@
     /**
      * Recent Entries
      * @param {Number} Site ID
-     * @param {Object} Additional Parameters
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      */
-    Class.prototype.listRecentEntries = function(siteId, params, cb) {
+    Class.prototype.listRecentEntries = function(siteId) {
+        
+        var opts = distachArgs(1, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -181,11 +219,15 @@
      * Month list with numbers of entries
      * TODO Better implement as server side endpoint for it.
      * @param {Number} Site ID
-     * @param {Object} Additional Parameters
-     * @param {Function} callback
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listMonthlyEntryCounts = function(siteId, params, cb) {
+    Class.prototype.listMonthlyEntryCounts = function(siteId) {
+        
+        var opts = distachArgs(1, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -222,10 +264,15 @@
      * @param {Number} Site ID
      * @param {Number} year like 2014
      * @param {Number} month number of 1 to 12
-     * @param {Function} cb
+     * @param {Object} Additional Parameters(optional)
+     * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.monthlyEntryCount = function(siteId, year, month, cb) {
+    Class.prototype.monthlyEntryCount = function(siteId, year, month) {
+        
+        var opts = distachArgs(3, arguments);
+        var params = opts[0];
+        var cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
