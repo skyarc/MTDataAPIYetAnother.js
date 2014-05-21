@@ -36,11 +36,7 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 
 * jQuery 1.9.1以上
 
----
-
-## 公開されているデータを取得する
-
-公開されているデータしか取得できません。
+## 使用例
 
 ### コンストラクタ
 
