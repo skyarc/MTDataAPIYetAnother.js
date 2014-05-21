@@ -35,11 +35,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.getEntry = function(siteId, entryId) {
+    Class.prototype.getEntry = function(siteId, entryId, params, cb) {
         
-        var opts = dispatchOptionalArgs(2);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries/" + entryId;
         var query = {
@@ -59,11 +59,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listCategoryStats = function(siteId) {
+    Class.prototype.listCategoryStats = function(siteId, params, cb) {
         
-        var opts = dispatchOptionalArgs(1);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var api = this;
         
@@ -111,11 +111,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listCategories = function(siteId) {
+    Class.prototype.listCategories = function(siteId, params, cb) {
         
-        var opts = dispatchOptionalArgs(1);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/categories";
         var query = {
@@ -136,11 +136,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listTags = function(siteId, maxRank) {
+    Class.prototype.listTags = function(siteId, maxRank, params, cb) {
         
-        var opts = dispatchOptionalArgs(2);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -181,11 +181,11 @@
      * @param {Object} Additional Parameters(optional)
      * @param {Function} callback(optional)
      */
-    Class.prototype.listRecentEntries = function(siteId) {
+    Class.prototype.listRecentEntries = function(siteId, params, cb) {
         
-        var opts = dispatchOptionalArgs(1);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -206,11 +206,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listMonthlyEntryCounts = function(siteId) {
+    Class.prototype.listMonthlyEntryCounts = function(siteId, params, cb) {
         
-        var opts = dispatchOptionalArgs(1);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -251,11 +251,11 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.monthlyEntryCount = function(siteId, year, month) {
+    Class.prototype.monthlyEntryCount = function(siteId, year, month, params, cb) {
         
-        var opts = dispatchOptionalArgs(3);
-        var params = opts[0];
-        var cb = opts[1];
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
@@ -297,26 +297,18 @@
     
     /**
      * Optional Parameters dispacher
-     * @param {Number} offset of first optional argument
-     * @param {Array} arguments for the caller
-     * @return {Array} params and a callback if exists
+     * @param {Object} callers optional parameter(optional)
+     * @param {Function} callers optional callback(optional)
+     * @return {Array} parameters and a callback with fallback value
      */
-    function dispatchOptionalArgs(offset) {
-        
-        var args =
-            Array.prototype.slice.call(dispatchOptionalArgs.caller.arguments, offset);
-        
-        switch (args.length) {
-            case 0:
-                return [[], undefined];
-            case 1:
-                return (typeof(args[0]) == "function")
-                                        ? [[], args[0]] : [args[0], undefined];
-            case 2:
-                return [args[0], args[1]];
+    function dispatchOptionalArgs(params, cb) {
+        if (typeof(params) === "function") {
+            cb = params;
         }
-        
-        throw "Error";
+        if (typeof(params) !== Object) {
+            params = [];
+        }
+        return [params, cb];
     }
     
     /**
