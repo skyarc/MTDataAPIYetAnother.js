@@ -154,7 +154,7 @@
             var total = {};
             for (var idx in data.items) {
                 var tags = data.items[idx].tags;
-                for (idx2 in data.items[idx].tags) {
+                for (var idx2 in data.items[idx].tags) {
                     var name = data.items[idx].tags[idx2];
                     total[name] = total[name] || 0;
                     total[name]++;
