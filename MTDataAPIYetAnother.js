@@ -305,7 +305,7 @@
         if (typeof(params) === "function") {
             cb = params;
         }
-        if (typeof(params) !== Object) {
+        if (typeof(params) !== 'object') {
             params = [];
         }
         return [params, cb];
