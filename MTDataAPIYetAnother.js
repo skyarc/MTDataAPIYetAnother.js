@@ -341,8 +341,8 @@
         var today = new Date();
         var y = today.getFullYear();
         var m = today.getMonth();
-        yearPast = y + Math.floor((m - offset) / 12);
-        monthPast = (m - offset) % 12;
+        var yearPast = y + Math.floor((m - offset) / 12);
+        var monthPast = (m - offset) % 12;
         while (monthPast < 0) {
             monthPast += 12;
         }
