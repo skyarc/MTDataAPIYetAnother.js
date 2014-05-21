@@ -28,23 +28,6 @@
         this.params = $.extend(default_params, params, {});
     };
     
-    function distachArgs(offset, lastArgs) {
-        
-        var args = Array.prototype.slice.call(lastArgs, offset);
-        
-        switch (args.length) {
-            case 0:
-                return [[], undefined];
-            case 1:
-                return (typeof(args[0]) == "function")
-                                        ? [[], args[0]] : [args[0], undefined];
-            case 2:
-                return [args[0], args[1]];
-        }
-        
-        throw "Error";
-    }
-    
     /**
      * Emulation of official SDK's API with JSONP support
      * @param {Number} Site ID
@@ -54,7 +37,7 @@
      */
     Class.prototype.getEntry = function(siteId, entryId) {
         
-        var opts = distachArgs(2, arguments);
+        var opts = dispatchOptionalArgs(2);
         var params = opts[0];
         var cb = opts[1];
         
@@ -78,7 +61,7 @@
      */
     Class.prototype.listCategoryStats = function(siteId) {
         
-        var opts = distachArgs(1, arguments);
+        var opts = dispatchOptionalArgs(1);
         var params = opts[0];
         var cb = opts[1];
         
@@ -130,7 +113,7 @@
      */
     Class.prototype.listCategories = function(siteId) {
         
-        var opts = distachArgs(1, arguments);
+        var opts = dispatchOptionalArgs(1);
         var params = opts[0];
         var cb = opts[1];
         
@@ -155,7 +138,7 @@
      */
     Class.prototype.listTags = function(siteId, maxRank) {
         
-        var opts = distachArgs(2, arguments);
+        var opts = dispatchOptionalArgs(2);
         var params = opts[0];
         var cb = opts[1];
         
@@ -200,7 +183,7 @@
      */
     Class.prototype.listRecentEntries = function(siteId) {
         
-        var opts = distachArgs(1, arguments);
+        var opts = dispatchOptionalArgs(1);
         var params = opts[0];
         var cb = opts[1];
         
@@ -225,7 +208,7 @@
      */
     Class.prototype.listMonthlyEntryCounts = function(siteId) {
         
-        var opts = distachArgs(1, arguments);
+        var opts = dispatchOptionalArgs(1);
         var params = opts[0];
         var cb = opts[1];
         
@@ -270,7 +253,7 @@
      */
     Class.prototype.monthlyEntryCount = function(siteId, year, month) {
         
-        var opts = distachArgs(3, arguments);
+        var opts = dispatchOptionalArgs(3);
         var params = opts[0];
         var cb = opts[1];
         
@@ -311,6 +294,30 @@
     
     window.MT = window.MT || {};
     window.MT.MTDataAPIYetAnother = window.MT.MTDataAPIYetAnother || Class;
+    
+    /**
+     * Optional Parameters dispacher
+     * @param {Number} offset of first optional argument
+     * @param {Array} arguments for the caller
+     * @return {Array} params and a callback if exists
+     */
+    function dispatchOptionalArgs(offset) {
+        
+        var args =
+            Array.prototype.slice.call(dispatchOptionalArgs.caller.arguments, offset);
+        
+        switch (args.length) {
+            case 0:
+                return [[], undefined];
+            case 1:
+                return (typeof(args[0]) == "function")
+                                        ? [[], args[0]] : [args[0], undefined];
+            case 2:
+                return [args[0], args[1]];
+        }
+        
+        throw "Error";
+    }
     
     /**
      * Date formatter for DataAPIExtendSearch plugin API
