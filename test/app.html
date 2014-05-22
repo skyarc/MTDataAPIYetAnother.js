@@ -128,13 +128,13 @@ $(function(){
     /**
      * タグクラウドを作成
      */
-    api.listTags(1, {maxRank:6, monthLimit:12}, function(json) {
-        if (json.error || json.totalResults == 0) {
+    api.listTags(1, {maxRank:6, monthLimit:12}, function(res) {
+        if (res.error || parseInt(res.totalResults) === 0) {
             return;
         }
         var appender = generateAppender($(".tagCloudContainer"));
-        for (idx in json.items) {
-            var item = json.items[idx];
+        for (idx in res.items) {
+            var item = res.items[idx];
             var text = sprintf("%", item.name);
             var li = appender(text, sprintf("#!/tag/%", encodeURI(item.name)));
             li.attr("class", "rank-" + item.rank);
@@ -144,13 +144,13 @@ $(function(){
     /**
      * 最近の記事一覧を作成
      */
-    api.listRecentEntries(1, {limit: 5, fields: 'id,title'}, function(json){
-        if (json.error || json.totalResults == 0) {
+    api.listRecentEntries(1, {limit: 5, fields: 'id,title'}, function(res){
+        if (res.error || parseInt(res.totalResults) === 0) {
             return;
         }
         var appender = generateAppender($(".recentEntriesContainer"));
-        for (idx in json.items) {
-            var item = json.items[idx];
+        for (idx in res.items) {
+            var item = res.items[idx];
             var text = item.title;
             appender(text, window.location.pathname + '#!/entry/' + item.id);
         }
@@ -159,13 +159,13 @@ $(function(){
     /**
      * 月別アーカイブを作成
      */
-    api.listMonthlyEntryCounts(1, {limit:6}, function(json){
-        if (json.error || json.totalResults == 0) {
+    api.listMonthlyEntryCounts(1, {limit:6}, function(res){
+        if (res.error || parseInt(res.totalResults) === 0) {
             return;
         }
         var appender = generateAppender($(".monthlyArchiveContainer"));
-        for (idx in json.items) {
-            var item = json.items[idx];
+        for (idx in res.items) {
+            var item = res.items[idx];
             var text = sprintf("%年%月(%)", item.year, item.month, item.totalResults);
             appender(text, sprintf("#!/month/%/%", item.year, item.month));
         }
@@ -174,22 +174,36 @@ $(function(){
     /**
      * カテゴリー一覧を作成
      */
-    api.listCategoryStats(1, function(json) {
-        if (json.error || json.totalResults == 0) {
+    api.listCategoryStats(1, function(res) {
+        if (res.error || parseInt(res.totalResults) === 0) {
             return;
         }
         var appender = generateAppender($(".categoryContainer"));
-        for (idx in json.items) {
-            var item = json.items[idx];
+        for (idx in res.items) {
+            var item = res.items[idx];
             var text = sprintf("%(%)", item.basename, item.totalResults);
             appender(text, sprintf("#!/category/%", item.basename));
         }
     });
     
     return;
+
+    /**
+     * prop2にデータを追加
+     * @param {Object} cont
+     * @param {Array} array
+     */
+    function prop2append(cont, array) {
+        if (array.length) {
+            cont.show().find(".data").html(array.map(function(v){
+                return sprintf('<a href="%">%</a>', v, v);
+            }).join(', '));
+        }
+    };
     
     /**
      * エントリーページを生成
+     * @param {Number} id
      */
     function constructEntryPage(id) {
         
@@ -198,38 +212,26 @@ $(function(){
         /**
          * 記事詳細ページのメインエリアを生成
          */
-        api.getEntry(1, id, function(json) {
-            if (json.error || json.totalResults == 0) {
+        api.getEntry(1, id, function(res) {
+            if (res.error || parseInt(res.totalResults) === 0) {
                 return;
             }
-            var date = new Date(json.date);
-            cont.find(".title").html(json.title);
-            cont.find(".body").html(json.body);
+            var date = new Date(res.date);
+            cont.find(".title").html(res.title);
+            cont.find(".body").html(res.body);
             cont.find(".authInfo .data").html(sprintf(
                 "%(%年%月%日 %:%)",
-                json.author.displayName,
+                res.author.displayName,
                 date.getFullYear(),
                 date.getMonth(),
                 date.getDate(),
                 pading(date.getHours()),
                 pading(date.getMinutes())
             ));
-            cont.find(".trackbacks .data").html(json.trackbacks.length);
-            cont.find(".comments .data").html(json.comments.length);
-            
-            /**
-             * prop2にデータを追加
-             */
-            var prop2appender = function (cont, array) {
-                if (array.length) {
-                    cont.show().find(".data").html(array.map(function(v){
-                        return sprintf('<a href="%">%</a>', v, v);
-                    }).join(', '));
-                }
-            }
-            
-            prop2appender(cont.find(".categories"), json.categories);
-            prop2appender(cont.find(".tags"), json.tags);
+            cont.find(".trackbacks .data").html(res.trackbacks.length);
+            cont.find(".comments .data").html(res.comments.length);
+            prop2append(cont.find(".categories"), res.categories);
+            prop2append(cont.find(".tags"), res.tags);
             swapMain(cont);
         });
         
@@ -247,13 +249,12 @@ $(function(){
         /**
          * 最近の記事一覧を作成
          */
-        api.listRecentEntries(1, {limit:10}, function(json){
-            if (json.error || json.totalResults == 0) {
+        api.listRecentEntries(1, {limit:10}, function(res){
+            if (res.error || parseInt(res.totalResults) === 0) {
                 return;
             }
-            for (idx in json.items) {
-                var item = json.items[idx];
-                var text = item.title;
+            for (idx in res.items) {
+                var item = res.items[idx];
                 var cont = entryContainer.clone();
                 var date = new Date(item.date);
                 cont.find(".title").html(item.title);
@@ -269,31 +270,20 @@ $(function(){
                 ));
                 cont.find(".trackbacks .data").html(item.trackbacks.length);
                 cont.find(".comments .data").html(item.comments.length);
-                
-                /**
-                 * prop2にデータを追加
-                 */
-                var prop2appender = function (cont, array) {
-                    if (array.length) {
-                        cont.show().find(".data").html(array.map(function(v){
-                            return sprintf('<a href="%">%</a>', v, v);
-                        }).join(', '));
-                    }
-                }
-                
-                prop2appender(cont.find(".categories"), item.categories);
-                prop2appender(cont.find(".tags"), item.tags);
+                prop2append(cont.find(".categories"), item.categories);
+                prop2append(cont.find(".tags"), item.tags);
                 cont.appendTo(listContainer);
             }
         });
         
-        swapMain(
-            $(".layouts > .indexContainer").clone().append(listContainer));
+        swapMain($(".layouts > .indexContainer").clone().append(listContainer));
     }
     
     /**
      * 月別一覧ページ
      * TODO IMPLEMENT IT!
+     * @param {Number} year
+     * @param {Number} month
      */
     function constructMunthlyArchivePage(year, month) {
         throw "NOT IMPLEMENTED YET";
@@ -302,6 +292,7 @@ $(function(){
     /**
      * カテゴリー別一覧ページ
      * TODO IMPLEMENT IT!
+     * @param {String} basename
      */
     function constructCategoryPage(basename) {
         throw "NOT IMPLEMENTED YET";
@@ -310,6 +301,7 @@ $(function(){
     /**
      * タグ別一覧ページ
      * TODO IMPLEMENT IT!
+     * @param {String} tag
      */
     function constructTagPage(tag) {
         throw "NOT IMPLEMENTED YET";
@@ -317,6 +309,7 @@ $(function(){
     
     /**
      * mainコンテナーの内容を差し替え
+     * @param {Object} newContent
      */
     function swapMain(newContent) {
         var main = $(".main");
@@ -324,12 +317,13 @@ $(function(){
         var fadeIn = function(){
             newContent.hide();
             main.html(newContent.fadeIn("fast"));
-        }
+        };
         current.length ? current.fadeOut("fast", fadeIn) : fadeIn();
     }
     
     /**
      * 汎用のリスト要素追加クロージャー
+     * @param {Object} cont
      */
     function generateAppender(cont) {
         var ul = $(".layouts .linkListContainer").clone().appendTo(cont);
@@ -345,8 +339,10 @@ $(function(){
     
     /**
      * 簡易版sprintf
+     * @param {String} format
+     * @param {String} var_args
      */
-    function sprintf(format) {
+    function sprintf(format, var_args) {
         var values = Array.prototype.slice.call(arguments, 1);
         for (idx in values) {
             format = format.replace("%", values[idx]);
@@ -356,6 +352,7 @@ $(function(){
     
     /**
      * 2桁専用ゼロパディング
+     * @param {Number} num
      */
     function pading(num) {
         return ('0' + num).slice(-2);
@@ -363,6 +360,7 @@ $(function(){
     
     /**
      * クエリー文字列をパース
+     * @param {String} string
      */
     function parseQuery(string) {
         var vars = {};
@@ -381,7 +379,7 @@ $(function(){
      */
     function parseHashQuery() {
         var hash = window.location.href.split('#!')[1];
-        return !hash ? [] : hash.replace(/^\//, '').split('/')
+        return !hash ? [] : hash.replace(/^\//, '').split('/');
     }
 });
 </script>

@@ -9,6 +9,8 @@
  * });
  * 
  * api.listCategoryStats(siteId, function(json){...});
+ * 
+ * @param $ jQuery object
  */
 ;(function($) {
     
@@ -30,9 +32,10 @@
     
     /**
      * Emulation of official SDK's API with JSONP support
-     * @param {Number} Site ID
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Number} entryId
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.getEntry = function(siteId, entryId, params, cb) {
@@ -54,9 +57,9 @@
     /**
      * Category list with numbers of entries
      * TODO Better implement as server side endpoint for it.
-     * @param {Number} Site ID
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.listCategoryStats = function(siteId, params, cb) {
@@ -106,9 +109,9 @@
     
     /**
      * Category list
-     * @param {Number} Site ID
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.listCategories = function(siteId, params, cb) {
@@ -130,10 +133,9 @@
     /**
      * Tag list
      * TODO Better implement as server side endpoint for it.
-     * @param {Number} Site ID
-     * @param {Number} Max rank number
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.listTags = function(siteId, params, cb) {
@@ -163,7 +165,7 @@
             var items = Object.keys(total).map(function(k) {
                 return {
                     name: k,
-                    totalResults: total[k],
+                    totalResults: total[k]
                 };
             });
             setRanks(items, (params.maxRank || 6));
@@ -177,9 +179,9 @@
     
     /**
      * Recent Entries
-     * @param {Number} Site ID
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      */
     Class.prototype.listRecentEntries = function(siteId, params, cb) {
         
@@ -190,7 +192,7 @@
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
             fields: params.fields,
-            limit: params.limit,
+            limit: params.limit
         };
         
         return this.getJSON(path, query, function(data) {
@@ -201,9 +203,9 @@
     /**
      * Month list with numbers of entries
      * TODO Better implement as server side endpoint for it.
-     * @param {Number} Site ID
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.listMonthlyEntryCounts = function(siteId, params, cb) {
@@ -244,11 +246,11 @@
     
     /**
      * Number of entries for given month
-     * @param {Number} Site ID
-     * @param {Number} year like 2014
-     * @param {Number} month number of 1 to 12
-     * @param {Object} Additional Parameters(optional)
-     * @param {Function} callback(optional)
+     * @param {Number} siteId Site ID
+     * @param {Number} year year like 2014
+     * @param {Number} month month number of 1 to 12
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
      * @return {jqXhr}
      */
     Class.prototype.monthlyEntryCount = function(siteId, year, month, params, cb) {
@@ -273,9 +275,9 @@
     
     /**
      * JSON request
-     * @param {Number} Site ID
-     * @param {Object} Options
-     * @param {Function} callback
+     * @param {String} path Path to access
+     * @param {Object} opt options
+     * @param {Function} cb callback
      * @return {jqXhr}
      */
     Class.prototype.getJSON = function(path, opt, cb) {
@@ -297,8 +299,8 @@
     
     /**
      * Optional Parameters dispacher
-     * @param {Object} callers optional parameter(optional)
-     * @param {Function} callers optional callback(optional)
+     * @param {Object} params callers optional parameter(optional)
+     * @param {Function} cb callers optional callback(optional)
      * @return {Array} parameters and a callback with fallback value
      */
     function dispatchOptionalArgs(params, cb) {
@@ -313,7 +315,7 @@
     
     /**
      * Date formatter for DataAPIExtendSearch plugin API
-     * @param {Date} Source date object
+     * @param {Date} d Source date object
      * @return {Object}
      */
     function yyyymmdd(d) {
@@ -326,7 +328,7 @@
     
     /**
      * Generate month interval by number of months
-     * @param {Number} Offset Number of months
+     * @param {Number} offset Offset Number of months
      * @return {Date}
      */
     function monthAgo(offset) {
@@ -343,8 +345,8 @@
     
     /**
      * Set tag cloud ranks for each entries
-     * @param {Object} Entry items
-     * @param {Number} Max number for rank
+     * @param {Object} items Entry items
+     * @param {Number} maxRank Max number for rank
      * @return void
      */
     function setRanks(items, maxRank) {
@@ -356,7 +358,7 @@
         var maxNum = Math.max.apply(null, nums);
         var minNum = Math.min.apply(null, nums);
         
-        if (maxNum == minNum) {
+        if (maxNum === minNum) {
             items.map(function(i) {
                 i.rank = parseInt(maxRank / 2);
             });
