@@ -51,18 +51,16 @@
 </div>
 
 <div class="layouts" style="display:none;">
-    <div class="indexContainer">
-        <div class="pageDescription">
-            このブログは、MovableTypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。
-        </div>
-    </div>
-    <div class="entriesByCategoryContainer">
+    <div class="pageContainer">
         <h2>
             
         </h2>
-    </div>
-    <div class="entryListContainer">
-        
+        <div class="pageDescription">
+            
+        </div>
+        <div class="entryListContainer">
+            
+        </div>
     </div>
     <div class="entryContainer">
         <div class="title">
@@ -214,9 +212,6 @@ $(function(){
         
         var cont = $(".layouts > .entryContainer").clone();
         
-        /**
-         * 記事詳細ページのメインエリアを生成
-         */
         api.getEntry(1, id, function(res) {
             if (res.error || parseInt(res.totalResults) === 0) {
                 return;
@@ -233,12 +228,10 @@ $(function(){
      */
     function constructIndexPage() {
         
-        var listContainer = $(".layouts > .entryListContainer").clone();
+        var pageContainer = $(".layouts > .pageContainer").clone();
+        var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
-        /**
-         * 最近の記事一覧を作成
-         */
         api.listEntries(1, {limit:10}, function(res){
             if (res.error || parseInt(res.totalResults) === 0) {
                 return;
@@ -252,7 +245,9 @@ $(function(){
             }
         });
         
-        swapMain($(".layouts > .indexContainer").clone().append(listContainer));
+        var description = "このブログは、MovableTypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。";
+        pageContainer.find(".pageDescription").html(description);
+        swapMain(pageContainer);
     }
     
     /**
@@ -271,12 +266,10 @@ $(function(){
      */
     function constructCategoryPage(basename) {
         
-        var listContainer = $(".layouts > .entryListContainer").clone();
+        var pageContainer = $(".layouts > .pageContainer").clone();
+        var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
-        /**
-         * 最近の記事一覧を作成
-         */
         api.listEntries(1, {category:basename, limit:10}, function(res){
             if (res.error || parseInt(res.totalResults) === 0) {
                 return;
@@ -289,19 +282,34 @@ $(function(){
             }
         });
         
-        var pageCont = $(".layouts > .entriesByCategoryContainer").clone();
-        pageCont.find("h2").html(sprintf("「%」の記事一覧", basename));
-        pageCont.append(listContainer)
-        swapMain(pageCont);
+        pageContainer.find("h2").html(sprintf("「%」カテゴリーの記事一覧", basename));
+        swapMain(pageContainer);
     }
     
     /**
      * タグ別一覧ページ
-     * TODO IMPLEMENT IT!
      * @param {String} tag
      */
     function constructTagPage(tag) {
-        throw "NOT IMPLEMENTED YET";
+        
+        var pageContainer = $(".layouts > .pageContainer").clone();
+        var listContainer = pageContainer.find(".entryListContainer");
+        var entryContainer = $(".layouts > .entryContainer").clone();
+        
+        api.listEntries(1, {tag:tag, limit:10}, function(res){
+            if (res.error || parseInt(res.totalResults) === 0) {
+                return;
+            }
+            for (idx in res.items) {
+                var item = res.items[idx];
+                var cont = entryContainer.clone();
+                assignEntryData(cont, item);
+                cont.appendTo(listContainer);
+            }
+        });
+        
+        pageContainer.find("h2").html(sprintf("「%」タグの記事一覧", tag));
+        swapMain(pageContainer);
     }
     
     /**
