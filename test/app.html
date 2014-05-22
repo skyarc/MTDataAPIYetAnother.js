@@ -202,17 +202,17 @@ $(function(){
             if (json.error || json.totalResults == 0) {
                 return;
             }
-            var createdDate = new Date(json.createdDate);
+            var date = new Date(json.date);
             cont.find(".title").html(json.title);
             cont.find(".body").html(json.body);
             cont.find(".authInfo .data").html(sprintf(
                 "%(%年%月%日 %:%)",
                 json.author.displayName,
-                createdDate.getFullYear(),
-                createdDate.getMonth(),
-                createdDate.getDate(),
-                pading(createdDate.getHours()),
-                pading(createdDate.getMinutes())
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate(),
+                pading(date.getHours()),
+                pading(date.getMinutes())
             ));
             cont.find(".trackbacks .data").html(json.trackbacks.length);
             cont.find(".comments .data").html(json.comments.length);
@@ -255,17 +255,17 @@ $(function(){
                 var item = json.items[idx];
                 var text = item.title;
                 var cont = entryContainer.clone();
-                var createdDate = new Date(item.createdDate);
+                var date = new Date(item.date);
                 cont.find(".title").html(item.title);
                 cont.find(".body").html(item.excerpt);
                 cont.find(".authInfo .data").html(sprintf(
                     "%(%年%月%日 %:%)",
                     item.author.displayName,
-                    createdDate.getFullYear(),
-                    createdDate.getMonth(),
-                    createdDate.getDate(),
-                    pading(createdDate.getHours()),
-                    pading(createdDate.getMinutes())
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate(),
+                    pading(date.getHours()),
+                    pading(date.getMinutes())
                 ));
                 cont.find(".trackbacks .data").html(item.trackbacks.length);
                 cont.find(".comments .data").html(item.comments.length);
