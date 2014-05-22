@@ -214,7 +214,7 @@
         
         var path = "/v1/sites/" + siteId + "/entries";
         var query = {
-            fields: 'createdDate',
+            fields: 'date',
             date_type: 'authored_on',
             after: yyyymmdd(monthAgo(params.limit - 1)),
             limit: 1000
@@ -223,7 +223,7 @@
         return this.getJSON(path, query, function(data) {
             var total = {};
             for (var idx in data.items) {
-                var ym = data.items[idx].createdDate.substr(0, 7);
+                var ym = data.items[idx].date.substr(0, 7);
                 total[ym] = total[ym] || 0;
                 total[ym]++;
             }
