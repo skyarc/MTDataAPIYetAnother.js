@@ -87,20 +87,28 @@ a {
   margin-right: 30px;
 }
 /* line 82, ../sass/app.scss */
+.mainStripe .main h2 {
+  padding: 5px 0;
+  margin: 0 -5px 1em;
+  border-bottom: 4px solid #e0daea;
+  font-weight: bold;
+  font-size: 1.8em;
+}
+/* line 89, ../sass/app.scss */
 .mainStripe .main .pageDescription {
   margin: 0 -5px 20px;
   padding: 10px 10px;
   border: 1px dotted #ddd;
 }
-/* line 87, ../sass/app.scss */
+/* line 94, ../sass/app.scss */
 .mainStripe .main .entryContainer {
   margin-bottom: 30px;
 }
-/* line 90, ../sass/app.scss */
+/* line 97, ../sass/app.scss */
 .mainStripe .main .entryContainer:last-child {
   margin-bottom: 0;
 }
-/* line 93, ../sass/app.scss */
+/* line 100, ../sass/app.scss */
 .mainStripe .main .entryContainer .title {
   margin-bottom: 0.2em;
   padding-bottom: 0.3em;
@@ -108,166 +116,166 @@ a {
   font-size: 1.6em;
   font-weight: bold;
 }
-/* line 100, ../sass/app.scss */
+/* line 107, ../sass/app.scss */
 .mainStripe .main .entryContainer .props {
   margin-bottom: 20px;
   font-size: 0.9em;
 }
-/* line 104, ../sass/app.scss */
+/* line 111, ../sass/app.scss */
 .mainStripe .main .entryContainer .props > * {
   float: left;
   margin-right: 0.8em;
 }
-/* line 109, ../sass/app.scss */
+/* line 116, ../sass/app.scss */
 .mainStripe .main .entryContainer .body {
   margin-bottom: 20px;
   width: 100%;
 }
-/* line 113, ../sass/app.scss */
+/* line 120, ../sass/app.scss */
 .mainStripe .main .entryContainer .body * {
   max-width: 100%;
   overflow: scroll;
 }
-/* line 118, ../sass/app.scss */
+/* line 125, ../sass/app.scss */
 .mainStripe .main .entryContainer .props2 {
   margin-bottom: 20px;
   font-size: 0.9em;
 }
-/* line 121, ../sass/app.scss */
+/* line 128, ../sass/app.scss */
 .mainStripe .main .entryContainer .props2 > * {
   float: left;
   margin-right: 0.8em;
 }
-/* line 125, ../sass/app.scss */
+/* line 132, ../sass/app.scss */
 .mainStripe .main .entryContainer .props2 .label {
   font-weight: bold;
 }
-/* line 131, ../sass/app.scss */
+/* line 138, ../sass/app.scss */
 .mainStripe .sidemenu {
   float: right;
   width: 240px;
   font-size: 14px;
 }
-/* line 135, ../sass/app.scss */
+/* line 142, ../sass/app.scss */
 .mainStripe .sidemenu .widget {
   margin-bottom: 10px;
 }
-/* line 137, ../sass/app.scss */
+/* line 144, ../sass/app.scss */
 .mainStripe .sidemenu .widget h3 {
   padding: 10px 8px;
   font-size: 1em;
   background-color: #eee;
 }
-/* line 142, ../sass/app.scss */
+/* line 149, ../sass/app.scss */
 .mainStripe .sidemenu .widget a {
   color: #6699dd;
   text-decoration: none;
 }
-/* line 145, ../sass/app.scss */
+/* line 152, ../sass/app.scss */
 .mainStripe .sidemenu .widget a:hover {
   background-color: #cba;
   color: #fff;
 }
-/* line 167, ../sass/app.scss */
+/* line 174, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul {
   padding: 10px 5px;
   font-size: 0.8em;
 }
-/* line 170, ../sass/app.scss */
+/* line 177, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li {
   display: inline-block;
 }
-/* line 174, ../sass/app.scss */
+/* line 181, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li a {
   white-space: nowrap;
   border-radius: 4px;
   padding: 4px;
   margin: -2px;
 }
-/* line 179, ../sass/app.scss */
+/* line 186, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li a:hover {
   color: #fff;
 }
-/* line 183, ../sass/app.scss */
+/* line 190, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-1 {
   font-size: 0.9em;
   z-index: 1;
 }
-/* line 186, ../sass/app.scss */
+/* line 193, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-1 a {
   color: #a5c3eb;
 }
-/* line 188, ../sass/app.scss */
+/* line 195, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-1 a:hover {
   color: #fff;
 }
-/* line 193, ../sass/app.scss */
+/* line 200, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-2 {
   font-size: 1.1em;
   z-index: 2;
 }
-/* line 196, ../sass/app.scss */
+/* line 203, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-2 a {
   color: #90b5e6;
 }
-/* line 198, ../sass/app.scss */
+/* line 205, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-2 a:hover {
   color: #fff;
 }
-/* line 203, ../sass/app.scss */
+/* line 210, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-3 {
   font-size: 1.3em;
   z-index: 3;
 }
-/* line 206, ../sass/app.scss */
+/* line 213, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-3 a {
   color: #7ba7e2;
 }
-/* line 208, ../sass/app.scss */
+/* line 215, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-3 a:hover {
   color: #fff;
 }
-/* line 213, ../sass/app.scss */
+/* line 220, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-4 {
   font-size: 1.5em;
   z-index: 4;
 }
-/* line 216, ../sass/app.scss */
+/* line 223, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-4 a {
   color: #6699dd;
 }
-/* line 218, ../sass/app.scss */
+/* line 225, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-4 a:hover {
   color: #fff;
 }
-/* line 223, ../sass/app.scss */
+/* line 230, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-5 {
   font-size: 1.7em;
   z-index: 5;
 }
-/* line 226, ../sass/app.scss */
+/* line 233, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-5 a {
   color: #3c7dd4;
 }
-/* line 228, ../sass/app.scss */
+/* line 235, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-5 a:hover {
   color: #fff;
 }
-/* line 233, ../sass/app.scss */
+/* line 240, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-6 {
   font-size: 1.9em;
   z-index: 6;
 }
-/* line 236, ../sass/app.scss */
+/* line 243, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-6 a {
   color: #2864b5;
 }
-/* line 238, ../sass/app.scss */
+/* line 245, ../sass/app.scss */
 .mainStripe .sidemenu .tagCloudContainer ul li.rank-6 a:hover {
   color: #fff;
 }
 
-/* line 248, ../sass/app.scss */
+/* line 255, ../sass/app.scss */
 .footerStripe {
   width: 100%;
   height: 60px;
@@ -275,13 +283,13 @@ a {
   background-color: #470101;
   color: #fff;
 }
-/* line 254, ../sass/app.scss */
+/* line 261, ../sass/app.scss */
 .footerStripe .inner {
   width: 1000px;
   margin: auto;
   position: relative;
 }
-/* line 258, ../sass/app.scss */
+/* line 265, ../sass/app.scss */
 .footerStripe .inner .poweredBy {
   position: absolute;
   top: 0;

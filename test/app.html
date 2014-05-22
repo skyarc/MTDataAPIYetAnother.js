@@ -56,6 +56,11 @@
             このブログは、MovableTypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。
         </div>
     </div>
+    <div class="entriesByCategoryContainer">
+        <h2>
+            
+        </h2>
+    </div>
     <div class="entryListContainer">
         
     </div>
@@ -104,8 +109,8 @@
 $(function(){
     
     var api = new MT.MTDataAPIYetAnother({
-        //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
-        baseUrl:"http://127.0.0.1:5000"
+        baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
+        //baseUrl:"http://127.0.0.1:5000"
     });
     
     var routes = {
@@ -291,11 +296,47 @@ $(function(){
     
     /**
      * カテゴリー別一覧ページ
-     * TODO IMPLEMENT IT!
      * @param {String} basename
      */
     function constructCategoryPage(basename) {
-        throw "NOT IMPLEMENTED YET";
+        
+        var listContainer = $(".layouts > .entryListContainer").clone();
+        var entryContainer = $(".layouts > .entryContainer").clone();
+        
+        /**
+         * 最近の記事一覧を作成
+         */
+        api.listEntries(1, {category:basename, limit:10}, function(res){
+            if (res.error || parseInt(res.totalResults) === 0) {
+                return;
+            }
+            for (idx in res.items) {
+                var item = res.items[idx];
+                var cont = entryContainer.clone();
+                var date = new Date(item.date);
+                cont.find(".title").html(item.title);
+                cont.find(".body").html(item.excerpt);
+                cont.find(".authInfo .data").html(sprintf(
+                    "%(%年%月%日 %:%)",
+                    item.author.displayName,
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate(),
+                    pading(date.getHours()),
+                    pading(date.getMinutes())
+                ));
+                cont.find(".trackbacks .data").html(item.trackbacks.length);
+                cont.find(".comments .data").html(item.comments.length);
+                prop2append(cont.find(".categories"), item.categories);
+                prop2append(cont.find(".tags"), item.tags);
+                cont.appendTo(listContainer);
+            }
+        });
+        
+        var pageCont = $(".layouts > .entriesByCategoryContainer").clone();
+        pageCont.find("h2").html(sprintf("「%」の記事一覧", basename));
+        pageCont.append(listContainer)
+        swapMain(pageCont);
     }
     
     /**
@@ -379,7 +420,7 @@ $(function(){
      */
     function parseHashQuery() {
         var hash = window.location.href.split('#!')[1];
-        return !hash ? [] : hash.replace(/^\//, '').split('/');
+        return !hash ? [] : decodeURI(hash).replace(/^\//, '').split('/');
     }
 });
 </script>
