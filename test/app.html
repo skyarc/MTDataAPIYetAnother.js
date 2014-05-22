@@ -109,8 +109,8 @@
 $(function(){
     
     var api = new MT.MTDataAPIYetAnother({
-        baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
-        //baseUrl:"http://127.0.0.1:5000"
+        //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
+        baseUrl:"http://127.0.0.1:5000"
     });
     
     var routes = {
@@ -221,22 +221,7 @@ $(function(){
             if (res.error || parseInt(res.totalResults) === 0) {
                 return;
             }
-            var date = new Date(res.date);
-            cont.find(".title").html(res.title);
-            cont.find(".body").html(res.body);
-            cont.find(".authInfo .data").html(sprintf(
-                "%(%年%月%日 %:%)",
-                res.author.displayName,
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                pading(date.getHours()),
-                pading(date.getMinutes())
-            ));
-            cont.find(".trackbacks .data").html(res.trackbacks.length);
-            cont.find(".comments .data").html(res.comments.length);
-            prop2append(cont.find(".categories"), res.categories);
-            prop2append(cont.find(".tags"), res.tags);
+            assignEntryData(cont, res);
             swapMain(cont);
         });
         
@@ -262,21 +247,7 @@ $(function(){
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
                 var date = new Date(item.date);
-                cont.find(".title").html(item.title);
-                cont.find(".body").html(item.excerpt);
-                cont.find(".authInfo .data").html(sprintf(
-                    "%(%年%月%日 %:%)",
-                    item.author.displayName,
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    pading(date.getHours()),
-                    pading(date.getMinutes())
-                ));
-                cont.find(".trackbacks .data").html(item.trackbacks.length);
-                cont.find(".comments .data").html(item.comments.length);
-                prop2append(cont.find(".categories"), item.categories);
-                prop2append(cont.find(".tags"), item.tags);
+                assignEntryData(cont, item);
                 cont.appendTo(listContainer);
             }
         });
@@ -313,22 +284,7 @@ $(function(){
             for (idx in res.items) {
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
-                var date = new Date(item.date);
-                cont.find(".title").html(item.title);
-                cont.find(".body").html(item.excerpt);
-                cont.find(".authInfo .data").html(sprintf(
-                    "%(%年%月%日 %:%)",
-                    item.author.displayName,
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    pading(date.getHours()),
-                    pading(date.getMinutes())
-                ));
-                cont.find(".trackbacks .data").html(item.trackbacks.length);
-                cont.find(".comments .data").html(item.comments.length);
-                prop2append(cont.find(".categories"), item.categories);
-                prop2append(cont.find(".tags"), item.tags);
+                assignEntryData(cont, item);
                 cont.appendTo(listContainer);
             }
         });
@@ -360,6 +316,30 @@ $(function(){
             main.html(newContent.fadeIn("fast"));
         };
         current.length ? current.fadeOut("fast", fadeIn) : fadeIn();
+    }
+    
+    /**
+     * エントリーのデータを各クラスに配備
+     * @param {Object} Entry container
+     * @param {Object} An item
+     */
+    function assignEntryData(cont, item) {
+        var date = new Date(item.date);
+        cont.find(".title").html(item.title);
+        cont.find(".body").html(item.excerpt);
+        cont.find(".authInfo .data").html(sprintf(
+            "%(%年%月%日 %:%)",
+            item.author.displayName,
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            pading(date.getHours()),
+            pading(date.getMinutes())
+        ));
+        cont.find(".trackbacks .data").html(item.trackbacks.length);
+        cont.find(".comments .data").html(item.comments.length);
+        prop2append(cont.find(".categories"), item.categories);
+        prop2append(cont.find(".tags"), item.tags);
     }
     
     /**
