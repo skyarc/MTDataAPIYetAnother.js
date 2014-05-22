@@ -136,7 +136,7 @@
      * @param {Function} callback(optional)
      * @return {jqXhr}
      */
-    Class.prototype.listTags = function(siteId, maxRank, params, cb) {
+    Class.prototype.listTags = function(siteId, params, cb) {
         
         var opts = dispatchOptionalArgs(params, cb);
         params = opts[0];
@@ -146,7 +146,7 @@
         var query = {
             fields: 'tags',
             date_type: 'authored_on',
-            after: yyyymmdd(monthAgo(params.limit || 5)),
+            after: yyyymmdd(monthAgo(params.monthLimit || 5)),
             limit: 1000
         };
         
@@ -166,7 +166,7 @@
                     totalResults: total[k],
                 };
             });
-            setRanks(items, maxRank);
+            setRanks(items, (params.maxRank || 6));
             var stat = {
                 totalResults: items.length,
                 items: items

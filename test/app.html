@@ -128,7 +128,7 @@ $(function(){
     /**
      * タグクラウドを作成
      */
-    api.listTags(1, 6, function(json) {
+    api.listTags(1, {maxRank:6, monthLimit:12}, function(json) {
         if (json.error || json.totalResults == 0) {
             return;
         }

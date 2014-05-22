@@ -94,7 +94,7 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 
 ### タグクラウド
 
-    api.listTags(1, 6, function(response) {
+    api.listTags(1, {maxRank:6, monthLimit:12}, function(response) {
         if (response.error || response.totalResults == 0) {
             return;
         }
