@@ -55,6 +55,26 @@
     };
     
     /**
+     * Emulation of official SDK's API with JSONP support
+     * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
+     * @return {jqXhr}
+     */
+    Class.prototype.listEntries = function(siteId, params, cb) {
+        
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
+        
+        var path = "/v1/sites/" + siteId + "/entries";
+        
+        return this.getJSON(path, params, function(data) {
+            cb && cb(data);
+        });
+    };
+    
+    /**
      * Category list with numbers of entries
      * TODO Better implement as server side endpoint for it.
      * @param {Number} siteId Site ID
@@ -121,11 +141,8 @@
         cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/categories";
-        var query = {
-            fields: params.fields
-        };
         
-        return this.getJSON(path, query, function(data) {
+        return this.getJSON(path, params, function(data) {
             cb && cb(data);
         });
     };
@@ -174,29 +191,6 @@
                 items: items
             };
             cb && cb(stat);
-        });
-    };
-    
-    /**
-     * Recent Entries
-     * @param {Number} siteId Site ID
-     * @param {Object} params Additional Parameters(optional)
-     * @param {Function} cb callback(optional)
-     */
-    Class.prototype.listRecentEntries = function(siteId, params, cb) {
-        
-        var opts = dispatchOptionalArgs(params, cb);
-        params = opts[0];
-        cb = opts[1];
-        
-        var path = "/v1/sites/" + siteId + "/entries";
-        var query = {
-            fields: params.fields,
-            limit: params.limit
-        };
-        
-        return this.getJSON(path, query, function(data) {
-            cb && cb(data);
         });
     };
     

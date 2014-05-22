@@ -45,22 +45,6 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
         enableJsonp:false
     });
 
-### 最近の記事
-
-    api.listRecentEntries(1, {limit: 5, fields: 'id,title'}, function(response){
-        if (response.error || response.totalResults == 0) {
-            // エラー処理
-            return;
-        }
-      
-        for (var idx in response.items) {
-            var item = response.items[idx];
-            var id = item.id;
-            var title = item.title;
-            // メニューパーツの構築など
-        }
-    });
-
 ### 月別アーカイブ
 
     api.listMonthlyEntryCounts(1, {limit:6}, function(response){
@@ -110,8 +94,9 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 
 ### 公式SDKと互換性のあるかもしれないメソッド
 
-* api.listCategories()
 * api.getEntry()
+* api.listEntries()
+* api.listCategories()
 
 ## REPOSITORY
 

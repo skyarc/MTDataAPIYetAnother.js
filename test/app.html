@@ -144,7 +144,7 @@ $(function(){
     /**
      * 最近の記事一覧を作成
      */
-    api.listRecentEntries(1, {limit: 5, fields: 'id,title'}, function(res){
+    api.listEntries(1, {limit: 5, fields: 'id,title'}, function(res){
         if (res.error || parseInt(res.totalResults) === 0) {
             return;
         }
@@ -249,7 +249,7 @@ $(function(){
         /**
          * 最近の記事一覧を作成
          */
-        api.listRecentEntries(1, {limit:10}, function(res){
+        api.listEntries(1, {limit:10}, function(res){
             if (res.error || parseInt(res.totalResults) === 0) {
                 return;
             }
