@@ -93,16 +93,17 @@ $(function(){
     });
     
     return;
-
+    
     /**
      * prop2にデータを追加
      * @param {Object} cont
      * @param {Array} array
+     * @param {String} type
      */
-    function prop2append(cont, array) {
+    function prop2append(cont, array, type) {
         if (array.length) {
             cont.show().find(".data").html(array.map(function(v){
-                return sprintf('<a href="%">%</a>', v, v);
+                return sprintf('<a href="#!/%/%">%</a>', type, v, v);
             }).join(', '));
         }
     };
@@ -249,8 +250,8 @@ $(function(){
         ));
         cont.find(".trackbacks .data").html(item.trackbacks.length);
         cont.find(".comments .data").html(item.comments.length);
-        prop2append(cont.find(".categories"), item.categories);
-        prop2append(cont.find(".tags"), item.tags);
+        prop2append(cont.find(".categories"), item.categories, 'category');
+        prop2append(cont.find(".tags"), item.tags, 'tag');
     }
     
     /**
