@@ -93,6 +93,19 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
         }
     });
 
+### 月指定記事一覧
+
+    api.listEntriesByMonth(1, {fields:name, limit:10}, function(response) {
+        if (response.error || response.item.length == 0) {
+            return;
+        }
+        
+        for (var idx in response.items) {
+            var item = response.items[idx];
+            var name = item.name;
+        }
+    });
+
 ### 公式SDKと互換性のあるかもしれないメソッド
 
 * api.getBlog()

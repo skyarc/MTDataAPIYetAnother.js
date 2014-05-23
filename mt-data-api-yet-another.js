@@ -93,6 +93,34 @@
     };
     
     /**
+     * Entry list for particular month
+     * @param {Number} siteId Site ID
+     * @param {Number} year Number like 2014
+     * @param {Number} month Number in 0-11
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
+     * @return {jqXhr}
+     */
+    Class.prototype.listEntriesByMonth =
+                                    function(siteId, year, month, params, cb) {
+        
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
+        
+        var path = "/v1/sites/" + siteId + "/entries";
+        var query = $.extend(params, {
+            date_type: 'authored_on',
+            from: yyyymmdd(new Date(year, month, 1)),
+            to: yyyymmdd(new Date(year, month + 1, 0)),
+        }, params);
+        
+        return this.getJSON(path, query, function(data) {
+            cb && cb(data);
+        });
+    };
+    
+    /**
      * Category list with numbers of entries
      * TODO Better implement as server side endpoint for it.
      * @param {Number} siteId Site ID

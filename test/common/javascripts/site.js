@@ -156,12 +156,30 @@ $(function(){
     
     /**
      * 月別一覧ページ
-     * TODO IMPLEMENT IT!
      * @param {Number} year
      * @param {Number} month
      */
     function constructMunthlyArchivePage(year, month) {
-        throw "NOT IMPLEMENTED YET";
+        
+        var pageContainer = $(".layouts > .pageContainer.type2").clone();
+        var listContainer = pageContainer.find(".entryListContainer");
+        var entryContainer = $(".layouts > .entryContainer").clone();
+        
+        api.listEntriesByMonth(1, year, month, {limit:20}, function(res){
+            if (res.error || res.items.length === 0) {
+                return;
+            }
+            for (idx in res.items) {
+                var item = res.items[idx];
+                var cont = entryContainer.clone();
+                var date = new Date(item.date);
+                assignEntryData(cont, item);
+                cont.appendTo(listContainer);
+            }
+        });
+        
+        pageContainer.find("h2").html(sprintf("%年%月の記事一覧", year, month));
+        swapMain(pageContainer);
     }
     
     /**

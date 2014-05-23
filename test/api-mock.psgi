@@ -167,6 +167,18 @@ sub entries {
     
     my @filters;
     
+    if (my $val = $req->param('from')) {
+        push(@filters, sub {
+            ($_->{createdDate} =~ qr{(.+)T})[0] gt $val
+        });
+    }
+    
+    if (my $val = $req->param('to')) {
+        push(@filters, sub {
+            ($_->{createdDate} =~ qr{(.+)T})[0] lt $val
+        });
+    }
+    
     if (my $val = $req->param('after')) {
         push(@filters, sub {
             ($_->{createdDate} =~ qr{(.+)T})[0] gt $val
