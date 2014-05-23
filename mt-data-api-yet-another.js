@@ -34,6 +34,26 @@
     /**
      * Emulation of official SDK's API with JSONP support
      * @param {Number} siteId Site ID
+     * @param {Object} params Additional Parameters(optional)
+     * @param {Function} cb callback(optional)
+     * @return {jqXhr}
+     */
+    Class.prototype.getBlog = function(siteId, params, cb) {
+        
+        var opts = dispatchOptionalArgs(params, cb);
+        params = opts[0];
+        cb = opts[1];
+        
+        var path = "/v1/sites/" + siteId;
+        
+        return this.getJSON(path, params, function(data) {
+            cb && cb(data);
+        });
+    };
+    
+    /**
+     * Emulation of official SDK's API with JSONP support
+     * @param {Number} siteId Site ID
      * @param {Number} entryId
      * @param {Object} params Additional Parameters(optional)
      * @param {Function} cb callback(optional)

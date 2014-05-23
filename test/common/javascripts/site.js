@@ -25,6 +25,13 @@ $(function(){
     $(window).on("hashchange", dispachAjaxPage);
     
     /**
+     * ブログタイトルを表示
+     */
+    api.getBlog(1, {fields: "name,url"}, function(res) {
+        $("h1 a").html(res.name).attr("href", res.url);
+    });
+    
+    /**
      * タグクラウドを作成
      */
     api.listTags(1, {maxRank:6, monthLimit:12}, function(res) {
