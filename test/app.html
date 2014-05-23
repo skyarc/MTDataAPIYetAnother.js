@@ -132,7 +132,7 @@ $(function(){
      * タグクラウドを作成
      */
     api.listTags(1, {maxRank:6, monthLimit:12}, function(res) {
-        if (res.error || parseInt(res.totalResults) === 0) {
+        if (res.error || res.items.length === 0) {
             return;
         }
         var appender = generateAppender($(".tagCloudContainer"));
@@ -148,7 +148,7 @@ $(function(){
      * 最近の記事一覧を作成
      */
     api.listEntries(1, {limit: 5, fields: 'id,title'}, function(res){
-        if (res.error || parseInt(res.totalResults) === 0) {
+        if (res.error || res.items.length === 0) {
             return;
         }
         var appender = generateAppender($(".recentEntriesContainer"));
@@ -163,7 +163,7 @@ $(function(){
      * 月別アーカイブを作成
      */
     api.listMonthlyEntryCounts(1, {limit:6}, function(res){
-        if (res.error || parseInt(res.totalResults) === 0) {
+        if (res.error || res.items.length === 0) {
             return;
         }
         var appender = generateAppender($(".monthlyArchiveContainer"));
@@ -178,7 +178,7 @@ $(function(){
      * カテゴリー一覧を作成
      */
     api.listCategoryStats(1, function(res) {
-        if (res.error || parseInt(res.totalResults) === 0) {
+        if (res.error || res.items.length === 0) {
             return;
         }
         var appender = generateAppender($(".categoryContainer"));
@@ -213,7 +213,7 @@ $(function(){
         var cont = $(".layouts > .entryContainer").clone();
         
         api.getEntry(1, id, function(res) {
-            if (res.error || parseInt(res.totalResults) === 0) {
+            if (res.error || res.items.length === 0) {
                 return;
             }
             assignEntryData(cont, res);
@@ -233,7 +233,7 @@ $(function(){
         var entryContainer = $(".layouts > .entryContainer").clone();
         
         api.listEntries(1, {limit:10}, function(res){
-            if (res.error || parseInt(res.totalResults) === 0) {
+            if (res.error || res.items.length === 0) {
                 return;
             }
             for (idx in res.items) {
@@ -271,7 +271,7 @@ $(function(){
         var entryContainer = $(".layouts > .entryContainer").clone();
         
         api.listEntries(1, {category:basename, limit:10}, function(res){
-            if (res.error || parseInt(res.totalResults) === 0) {
+            if (res.error || res.items.length === 0) {
                 return;
             }
             for (idx in res.items) {
@@ -297,7 +297,7 @@ $(function(){
         var entryContainer = $(".layouts > .entryContainer").clone();
         
         api.listEntries(1, {tag:tag, limit:10}, function(res){
-            if (res.error || parseInt(res.totalResults) === 0) {
+            if (res.error || res.items.length === 0) {
                 return;
             }
             for (idx in res.items) {
