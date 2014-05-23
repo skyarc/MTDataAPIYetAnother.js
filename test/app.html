@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <title>MovableType DataAPI Test</title>
-<script type="text/javascript" src="./javascripts/jquery.1.9.1.js"></script>
-<script type="text/javascript" src="../MTDataAPIYetAnother.js"></script>
-<link type="text/css" rel="stylesheet" href="./stylesheets/reset-min.css" />
-<link type="text/css" rel="stylesheet" href="./stylesheets/fonts-min.css" />
-<link type="text/css" rel="stylesheet" href="./stylesheets/app.css" />
+<script type="text/javascript" src="./common/javascripts/jquery.1.9.1.js"></script>
+<script type="text/javascript" src="../mt-data-api-yet-another.js"></script>
+<link type="text/css" rel="stylesheet" href="./common/stylesheets/reset-min.css" />
+<link type="text/css" rel="stylesheet" href="./common/stylesheets/fonts-min.css" />
+<link type="text/css" rel="stylesheet" href="./common/stylesheets/app.css" />
 
 <div class="headerStripe">
     <div class="inner">
@@ -113,7 +113,8 @@ $(function(){
     
     var api = new MT.MTDataAPIYetAnother({
         //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi",
-        baseUrl:"http://127.0.0.1:5000",
+        //baseUrl:"http://127.0.0.1:5000",
+        baseUrl:"/cgi-bin/mt/mt-data-api.cgi",
         internalLimit: 1000
     });
     
