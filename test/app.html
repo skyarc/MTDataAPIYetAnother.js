@@ -51,13 +51,18 @@
 </div>
 
 <div class="layouts" style="display:none;">
-    <div class="pageContainer">
-        <h2>
-            
-        </h2>
+    <div class="pageContainer type1">
         <div class="pageDescription">
             
         </div>
+        <div class="entryListContainer">
+            
+        </div>
+    </div>
+    <div class="pageContainer type2">
+        <h2>
+            
+        </h2>
         <div class="entryListContainer">
             
         </div>
@@ -229,7 +234,7 @@ $(function(){
      */
     function constructIndexPage() {
         
-        var pageContainer = $(".layouts > .pageContainer").clone();
+        var pageContainer = $(".layouts > .pageContainer.type1").clone();
         var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
@@ -267,7 +272,7 @@ $(function(){
      */
     function constructCategoryPage(basename) {
         
-        var pageContainer = $(".layouts > .pageContainer").clone();
+        var pageContainer = $(".layouts > .pageContainer.type2").clone();
         var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
@@ -293,7 +298,7 @@ $(function(){
      */
     function constructTagPage(tag) {
         
-        var pageContainer = $(".layouts > .pageContainer").clone();
+        var pageContainer = $(".layouts > .pageContainer.type2").clone();
         var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
