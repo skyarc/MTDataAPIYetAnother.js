@@ -95,6 +95,7 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 
 ### 公式SDKと互換性のあるかもしれないメソッド
 
+* api.getBlog()
 * api.getEntry()
 * api.listEntries()
 * api.listCategories()
