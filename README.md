@@ -41,14 +41,15 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 ### コンストラクタ
 
     var api = new MT.MTDataAPIYetAnother({
-        baseUrl:"http://example.com/mt-data-api.cgi",
-        enableJsonp:false
+        baseUrl: "http://example.com/mt-data-api.cgi",
+        enableJsonp: false,
+        internalLimit: 1000
     });
 
 ### 月別アーカイブ
 
-    api.listMonthlyEntryCounts(1, {limit:6}, function(response){
-        if (response.error || response.totalResults == 0) {
+    api.listMonthlyEntryCounts(1, {monthLimit:6}, function(response){
+        if (response.error || response.item.length == 0) {
             return;
         }
         
@@ -64,7 +65,7 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 ### カテゴリー一覧
 
     api.listCategoryStats(1, function(response) {
-        if (response.error || response.totalResults == 0) {
+        if (response.error || response.item.length == 0) {
             return;
         }
         
@@ -79,7 +80,7 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 ### タグクラウド
 
     api.listTags(1, {maxRank:6, monthLimit:12}, function(response) {
-        if (response.error || response.totalResults == 0) {
+        if (response.error || response.item.length == 0) {
             return;
         }
         
