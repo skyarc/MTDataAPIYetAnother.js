@@ -184,7 +184,7 @@ $(function(){
         var appender = generateAppender($(".categoryContainer"));
         for (idx in res.items) {
             var item = res.items[idx];
-            var text = sprintf("%(%)", item.basename, item.totalResults);
+            var text = sprintf("%(%)", item.label, item.totalResults);
             appender(text, sprintf("#!/category/%", item.basename));
         }
     });

@@ -96,7 +96,7 @@
             var deferredObjects = [];
             
             for (var idx in data.items) {
-                var name = data.items[idx].basename;
+                var name = data.items[idx].label;
                 var path = "/v1/sites/1/entries";
                 var query = {
                     category: name,
@@ -112,7 +112,8 @@
                                                                 function(v, i) {
                     return {
                         totalResults: v[0].totalResults,
-                        basename: data.items[i].label
+                        basename: data.items[i].basename,
+                        label: data.items[i].label
                     };
                 });
                 var stat = {
