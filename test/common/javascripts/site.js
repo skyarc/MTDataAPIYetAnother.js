@@ -88,7 +88,7 @@ $(function(){
         for (idx in res.items) {
             var item = res.items[idx];
             var text = sprintf("%(%)", item.label, item.totalResults);
-            appender(text, sprintf("#!/category/%", item.basename));
+            appender(text, sprintf("#!/category/%", item.label));
         }
     });
     
@@ -167,13 +167,13 @@ $(function(){
      * カテゴリー別一覧ページ
      * @param {String} basename
      */
-    function constructCategoryPage(basename) {
+    function constructCategoryPage(label) {
         
         var pageContainer = $(".layouts > .pageContainer.type2").clone();
         var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
-        api.listEntries(1, {category:basename, limit:10}, function(res){
+        api.listEntries(1, {category:label, limit:10}, function(res){
             if (res.error || res.items.length === 0) {
                 return;
             }
@@ -185,7 +185,7 @@ $(function(){
             }
         });
         
-        pageContainer.find("h2").html(sprintf("「%」カテゴリーの記事一覧", basename));
+        pageContainer.find("h2").html(sprintf("「%」カテゴリーの記事一覧", label));
         swapMain(pageContainer);
     }
     
