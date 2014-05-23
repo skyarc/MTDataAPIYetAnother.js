@@ -66,11 +66,8 @@
         cb = opts[1];
         
         var path = "/v1/sites/" + siteId + "/entries/" + entryId;
-        var query = {
-            fields: params.fields
-        };
         
-        return this.getJSON(path, query, function(data) {
+        return this.getJSON(path, params, function(data) {
             cb && cb(data);
         });
     };
