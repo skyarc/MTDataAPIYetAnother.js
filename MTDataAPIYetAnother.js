@@ -19,7 +19,8 @@
      */
     var default_params = {
         baseUrl: undefined,
-        enableJsonp: true
+        enableJsonp: true,
+        internalLimit: 1000
     };
     
     /**
@@ -101,7 +102,7 @@
                 var query = {
                     category: name,
                     fields: 'DUMMY', // it works for now
-                    limit: 1000
+                    limit: api.internalLimit
                 };
                 var xhr = api.getJSON(path, query);
                 deferredObjects.push(xhr);
@@ -167,7 +168,7 @@
             fields: 'tags',
             date_type: 'authored_on',
             after: yyyymmdd(monthAgo(params.monthLimit || 5)),
-            limit: 1000
+            limit: this.internalLimit
         };
         
         return this.getJSON(path, query, function(data) {
@@ -213,8 +214,8 @@
         var query = {
             fields: 'date',
             date_type: 'authored_on',
-            after: yyyymmdd(monthAgo(params.limit - 1)),
-            limit: 1000
+            after: yyyymmdd(monthAgo(params.monthLimit - 1)),
+            limit: this.internalLimit
         };
         
         return this.getJSON(path, query, function(data) {
@@ -260,7 +261,7 @@
             date_type: 'authored_on',
             from: yyyymmdd(new Date(year, month - 1, 1)),
             to: yyyymmdd(new Date(year, month, 0)),
-            limit: 1000
+            limit: this.internalLimit
         };
         
         return this.getJSON(path, query, function(data) {

@@ -107,8 +107,9 @@
 $(function(){
     
     var api = new MT.MTDataAPIYetAnother({
-        //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi"
-        baseUrl:"http://127.0.0.1:5000"
+        //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi",
+        baseUrl:"http://127.0.0.1:5000",
+        internalLimit: 1000
     });
     
     var routes = {
@@ -162,7 +163,7 @@ $(function(){
     /**
      * 月別アーカイブを作成
      */
-    api.listMonthlyEntryCounts(1, {limit:6}, function(res){
+    api.listMonthlyEntryCounts(1, {monthLimit:6}, function(res){
         if (res.error || res.items.length === 0) {
             return;
         }
@@ -213,7 +214,7 @@ $(function(){
         var cont = $(".layouts > .entryContainer").clone();
         
         api.getEntry(1, id, function(res) {
-            if (res.error || res.items.length === 0) {
+            if (res.error) {
                 return;
             }
             assignEntryData(cont, res);
