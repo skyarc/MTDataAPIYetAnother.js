@@ -111,8 +111,8 @@
         var path = "/v1/sites/" + siteId + "/entries";
         var query = $.extend(params, {
             date_type: 'authored_on',
-            from: yyyymmdd(new Date(year, month, 1)),
-            to: yyyymmdd(new Date(year, month + 1, 0)),
+            from: yyyymmdd(new Date(year, month - 1, 1)),
+            to: yyyymmdd(new Date(year, month, 0)),
         }, params);
         
         return this.getJSON(path, query, function(data) {
