@@ -165,7 +165,8 @@ $(function(){
         var listContainer = pageContainer.find(".entryListContainer");
         var entryContainer = $(".layouts > .entryContainer").clone();
         
-        api.listEntriesByMonth(1, year, month, {limit:20}, function(res){
+        api.listEntriesByMonth(1, parseInt(year), parseInt(month),
+                                                    {limit:20}, function(res){
             if (res.error || res.items.length === 0) {
                 return;
             }
@@ -261,7 +262,7 @@ $(function(){
             "%(%年%月%日 %:%)",
             item.author.displayName,
             date.getFullYear(),
-            date.getMonth(),
+            date.getMonth() + 1,
             date.getDate(),
             pading(date.getHours()),
             pading(date.getMinutes())
