@@ -42,7 +42,7 @@ $(function(){
         for (idx in res.items) {
             var item = res.items[idx];
             var text = sprintf("%", item.name);
-            var li = appender(text, sprintf("#!/tag/%", encodeURI(item.name)));
+            var li = appender(text, sprintf("#!/tag/%", item.name));
             li.attr("class", "rank-" + item.rank);
         }
     });
