@@ -19,7 +19,7 @@
      */
     var default_params = {
         baseUrl: undefined,
-        enableJsonp: true,
+        enableJsonp: false,
         internalLimit: 1000
     };
     
