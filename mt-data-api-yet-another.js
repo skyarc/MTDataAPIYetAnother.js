@@ -137,6 +137,10 @@
         var api = this;
         
         return api.listCategories(siteId, {fields:'basename,label'}, function(data) {
+            if (data.error) {
+                cb && cb(data);
+                return;
+            }
             
             var dfd = $.Deferred();
             var deferredObjects = [];
@@ -154,23 +158,25 @@
             }
             
             $.when.apply(null, deferredObjects).done(function() {
+                var error;
                 var items = Array.prototype.slice.call(arguments, 0).map(
                                                                 function(v, i) {
-                    return {
+                    if (v.error) {
+                        error = v.error;
+                    }
+                    return error ? {} : {
                         totalResults: v[0].totalResults,
                         basename: data.items[i].basename,
                         label: data.items[i].label
                     };
                 });
-                var stat = {
+                var stat = error ? error : {
                     totalResults: items.length,
                     items: items
                 };
                 dfd.resolve();
                 cb && cb(stat);
             });
-            
-            return dfd.promise();
         });
     };
     
@@ -217,6 +223,10 @@
         };
         
         return this.getJSON(path, query, function(data) {
+            if (data.error) {
+                cb && cb(data);
+                return;
+            }
             var total = {};
             for (var idx in data.items) {
                 var tags = data.items[idx].tags;
@@ -264,6 +274,10 @@
         };
         
         return this.getJSON(path, query, function(data) {
+            if (data.error) {
+                cb && cb(data);
+                return;
+            }
             var total = {};
             for (var idx in data.items) {
                 var ym = data.items[idx].date.substr(0, 7);
@@ -329,6 +343,17 @@
             type: 'GET',
             url: this.params.baseUrl + path + (query ? "?" + query : ""),
             dataType: this.params.enableJsonp ? 'jsonp' : 'json',
+            error: function(xhr, textStatus, errorThrown) {
+                var data = {
+                    error : {
+                        code: null,
+                        message: textStatus,
+                        xhr: xhr,
+                        errorThrown: errorThrown
+                    }
+                };
+                cb && cb(data);
+            },
             success: function(data) {
                 cb && cb(data);
             }

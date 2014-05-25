@@ -114,6 +114,26 @@ MTDataAPIYetAnother.jsは、[Movable Type 6]の[Data API]をウェブブラウ�
 * api.listEntries()
 * api.listCategories()
 
+### エラーハンドリング
+
+    api.someMethod(1, function(response) {
+        if (response.error) { // 何らかのエラー
+            if (response.code) { // Data APIがエラーを返している
+                alert(response.message); // Data APIのエラーメッセージ
+            } else {
+                alert(response.message) // 通信経路のエラーメッセージ
+                console.log(response.xhr) // デバッグ
+                console.log(response.errorThrown) // デバッグ
+            }
+        }
+        
+        if (response.item.length == 0) {
+            alert("データがありません");
+        }
+        
+        // 正常時の処理
+    });
+
 ## REPOSITORY
 
 [https://github.com/jamadam/MTDataAPIYetAnother.js]
