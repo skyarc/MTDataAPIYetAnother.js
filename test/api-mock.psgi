@@ -34,6 +34,15 @@ my $app = sub {
 
 builder {
     enable 'JSONP';
+    enable sub {
+        my $app = shift;
+        return sub {
+            my $env = shift;
+            my $res = $app->($env);
+            push(@{$res->[1]}, ("Access-Control-Allow-Origin", "*"));
+            return $res;
+        };
+    };
     $app;
 };
 
