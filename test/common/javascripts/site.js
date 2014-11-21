@@ -3,7 +3,7 @@ $(function(){
     var api = new MT.MTDataAPIYetAnother({
         //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi",
         //baseUrl:"http://127.0.0.1:5000",
-        baseUrl:"/cgi-bin/mt/mt-data-api.cgi",
+        baseUrl:"http://mtddc.skyarc.org/cgi-bin/mt/mt-data-api.cgi",
         internalLimit: 1000
     });
     
