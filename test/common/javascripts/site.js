@@ -269,8 +269,10 @@ $(function(){
             pading(date.getHours()),
             pading(date.getMinutes())
         ));
+/*
         cont.find(".trackbacks .data").html(item.trackbacks.length);
         cont.find(".comments .data").html(item.comments.length);
+*/
         prop2append(cont.find(".categories"), item.categories, 'category');
         prop2append(cont.find(".tags"), item.tags, 'tag');
     }
