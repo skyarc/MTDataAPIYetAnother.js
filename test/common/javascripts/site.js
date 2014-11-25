@@ -30,7 +30,7 @@ $(function(){
      */
     api.getBlog(1, {fields: "name,url"}, function(res) {
 //        $("h1 a").html(res.name).attr("href", res.url);
-	$("h1 a").html(res.name).attr("href", document.URL);
+	$("h1 a").html(res.name).attr("href", location.origin + location.pathname);
     });
     
     /**
