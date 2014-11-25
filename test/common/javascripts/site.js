@@ -151,7 +151,7 @@ $(function(){
             }
         });
         
-        var description = "このブログは、MovableTypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。";
+        var description = "このブログは、Movable TypeのDataAPI経由のデータをもとにページの全てを生成することを目指す実験用ブログです。";
         pageContainer.find(".pageDescription").html(description);
         swapMain(pageContainer);
     }
