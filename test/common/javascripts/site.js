@@ -29,7 +29,8 @@ $(function(){
      * ブログタイトルを表示
      */
     api.getBlog(1, {fields: "name,url"}, function(res) {
-        $("h1 a").html(res.name).attr("href", res.url);
+//        $("h1 a").html(res.name).attr("href", res.url);
+	$("h1 a").html(res.name).attr("href", "http://skyarc.azurewebsites.net/test/app.html");
     });
     
     /**
