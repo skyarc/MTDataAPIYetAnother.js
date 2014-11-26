@@ -264,8 +264,9 @@ $(function(){
         if (isIndex) {
             cont.find(".body").html(item.excerpt);
         } else {
-            var body = item.body.replace(/(?:\x0D\x0A|\x0D|\x0A)/g, "<br />");
-            body = item.body.replace(/src\s*=\s*([^\"]*)"/g, 'src="' + imageBaseUrl + '$1"');
+            var body = item.body
+                .replace(/(?:\x0D\x0A|\x0D|\x0A)/g, "<br />")
+                .replace(/src\s*=\s*([^\"]*)"/g, 'src="' + imageBaseUrl + '$1"');
             cont.find(".body").html(body);
             cont.find("blockquote").css({border: "1px solid", padding: "5px"});
         }
