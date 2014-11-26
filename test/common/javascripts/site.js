@@ -266,7 +266,7 @@ $(function(){
         } else {
             var body = item.body
                 .replace(/(?:\x0D\x0A|\x0D|\x0A)/g, "<br />")
-                .replace(/src\s*=\s*"([^"]*)"/g, 'src="' + imageBaseUrl + '$1"');
+                .replace(/src\s*=\s*"((?!https?:\/\/)[^"]*)"/g, 'src="' + imageBaseUrl + '$1"');
             cont.find(".body").html(body);
             cont.find("blockquote").css({border: "1px solid", padding: "5px"});
         }
