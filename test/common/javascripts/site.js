@@ -1,11 +1,11 @@
 $(function(){
-    
+    var imageBaseUrl = "http://www.skyarc.co.jp";
     var api = new MT.MTDataAPIYetAnother({
         //baseUrl:"http://192.168.56.101:5000/mt-data-api.cgi",
         //baseUrl:"http://127.0.0.1:5000",
         baseUrl:"http://mtddc.skyarc.org/cgi-bin/mt/mt-data-api.cgi",
         internalLimit: 1000,
-	enableJsonp: true
+        enableJsonp: true
     });
     
     var routes = {
@@ -122,7 +122,7 @@ $(function(){
             if (res.error) {
                 return;
             }
-            assignEntryData(cont, res);
+            assignEntryData(cont, res, false);
             swapMain(cont);
         });
         
@@ -146,7 +146,7 @@ $(function(){
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
                 var date = new Date(item.date);
-                assignEntryData(cont, item);
+                assignEntryData(cont, item, true);
                 cont.appendTo(listContainer);
             }
         });
@@ -176,7 +176,7 @@ $(function(){
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
                 var date = new Date(item.date);
-                assignEntryData(cont, item);
+                assignEntryData(cont, item, true);
                 cont.appendTo(listContainer);
             }
         });
@@ -202,7 +202,7 @@ $(function(){
             for (idx in res.items) {
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
-                assignEntryData(cont, item);
+                assignEntryData(cont, item, true);
                 cont.appendTo(listContainer);
             }
         });
@@ -228,7 +228,7 @@ $(function(){
             for (idx in res.items) {
                 var item = res.items[idx];
                 var cont = entryContainer.clone();
-                assignEntryData(cont, item);
+                assignEntryData(cont, item, true);
                 cont.appendTo(listContainer);
             }
         });
@@ -256,10 +256,19 @@ $(function(){
      * @param {Object} cont Entry container
      * @param {Object} item An item
      */
-    function assignEntryData(cont, item) {
+    function assignEntryData(cont, item, isIndex) {
         var date = new Date(item.date);
-        cont.find(".title").html(item.title);
-        cont.find(".body").html(item.excerpt);
+//        cont.find(".title").html(item.title);
+        cont.find(".title").html($('<a href="#!/entry/' + item.id + '">' + item.title + '</a>'));
+//        cont.find(".body").html(item.excerpt);
+        if (isIndex) {
+            cont.find(".body").html(item.excerpt);
+        } else {
+            var body = item.body.replace(/(?:\x0D\x0A|\x0D|\x0A)/g, "<br />");
+            body = item.body.replace(/src\s*=\s*([^\"]*)"/g, 'src="' + imageBaseUrl + '$1"');
+            cont.find(".body").html(body);
+            cont.find("blockquote").css({border: "1px solid", padding: "5px"});
+        }
         cont.find(".authInfo .data").html(sprintf(
             "%(%年%月%日 %:%)",
             item.author.displayName,
